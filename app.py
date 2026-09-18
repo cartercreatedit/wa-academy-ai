@@ -234,9 +234,9 @@ if prompt:
                 
                 api_messages = [system_instruction] + [{"role": m["role"], "content": m["content"]} for m in st.session_state.academy_messages]
                 
-                # Routes straight through Groq's active high-speed text supercomputer node
+                # FIXED MODEL PATHWAY: Swapped to the highly active, stable free-tier production node
                 completion = client.chat.completions.create(
-                    model="llama-3.3-70b-versatile", 
+                    model="llama3-8b-8192", 
                     messages=api_messages, 
                     temperature=0.4, 
                     max_tokens=600
