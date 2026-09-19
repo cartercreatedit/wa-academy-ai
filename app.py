@@ -4,53 +4,38 @@ import os
 import streamlit.components.v1 as components
 
 st.set_page_config(
-    page_title="WA Academy AI // WACE & ATAR Engine",
-    page_icon="🎓",
-    layout="wide", # Widescreen layout allows for the split metric panel
-    initial_sidebar_state="expanded"
+    page_title="AtlasTG",
+    page_icon="✦",
+    layout="centered",
+    initial_sidebar_state="collapsed"
 )
 
-# ── ACADEMY PREMIUM STYLING ─────────────────────────
+# ── CSS Configuration ─────────────────────────
 st.markdown("""
 <style>
 .stApp {
-    background-color: #07080a;
-    color: #e2e8f0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: #0a0a0a;
+    color: #e8e8e8;
 }
 .main .block-container {
     padding-top: 2rem;
-    padding-bottom: 140px !important;
-    max-width: 95% !important;
+    padding-bottom: 160px !important;
+    max-width: 760px;
+    min-height: 100vh;
 }
 #MainMenu, footer, header, .stDeployButton {
     visibility: hidden;
 }
-
-/* 🎓 ACADEMY INTERFACE CARD DESIGN 🎓 */
-.academy-sidebar {
-    background-color: #0f172a;
-    border: 1px solid #1e293b;
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 16px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+h1 {
+    color: #ffffff !important;
+    font-weight: 500 !important;
+    font-size: 1.75rem !important;
 }
-.sidebar-title {
-    color: #38bdf8;
-    font-size: 0.85rem;
-    letter-spacing: 1.5px;
-    font-weight: bold;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-}
-.sidebar-value {
-    font-size: 1.6rem;
-    font-weight: bold;
-    color: #ffffff;
+.stCaption {
+    color: #8b8b8b !important;
 }
 
-/* 👤 TIMELINE CHAT BUBBLES */
+/* Clear default Streamlit padding baggage */
 div[data-testid="stChatMessage"] {
     background-color: transparent !important;
     border: none !important;
@@ -58,78 +43,51 @@ div[data-testid="stChatMessage"] {
     padding: 0px !important;
 }
 
-/* Student Prompts (Right Aligned Bubble) */
-div[data-testid="stChatMessage"]:has([data-testid="user-avatar"]) {
-    display: flex !important;
-    justify-content: flex-end !important;
-}
-div[data-testid="stChatMessage"]:has([data-testid="user-avatar"]) > div:nth-child(2) {
-    background-color: #1e293b !important;
-    border: 1px solid #334155 !important;
-    padding: 12px 18px !important;
-    border-radius: 16px !important;
-    border-top-right-radius: 2px !important;
-    max-width: 80% !important;
-    display: inline-block !important;
-}
-
-/* Academy Tutor (Left Aligned Raw Text) */
-div[data-testid="stChatMessage"]:has([data-testid="assistant-avatar"]) {
-    display: flex !important;
-    justify-content: flex-start !important;
-}
-div[data-testid="stChatMessage"]:has([data-testid="assistant-avatar"]) > div:nth-child(2) {
-    background-color: transparent !important;
-    border: none !important;
-    padding: 8px 0px !important;
-    box-shadow: none !important;
-    max-width: 100% !important;
-}
-
+/* Force clean text behavior inside all markdown elements */
 div[data-testid="stMarkdownContainer"] p {
     color: #f1f5f9 !important;
-    font-size: 15px !important;
+    font-size: 15.5px !important;
     line-height: 1.6 !important;
-    margin: 0px !important;
 }
 
-/* ── GOOGLE-STYLE FLOATING FIXED INPUT DOCK ── */
+/* ── EXACT GOOGLE AI INPUT BOX MATCH WITH NO HIGHLIGHT OUTLINE ── */
 div[data-testid="stChatInput"] {
     position: fixed !important;
     bottom: 32px !important;
-    right: 32px !important;
-    width: 58vw !important; /* Locks width cleanly to align with the main chat column */
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: min(760px, 92vw) !important;
     z-index: 999 !important;
 }
-@media (max-width: 768px) {
-    div[data-testid="stChatInput"] {
-        width: 90vw !important;
-        left: 50% !important;
-        transform: translateX(-50%) !important;
-    }
-}
+
+/* Premium frame bounding ring line container */
 .stChatInput {
-    background-color: #0f172a !important;
-    border: 1px solid #1e293b !important;
-    border-radius: 24px !important;
-    box-shadow: 0 4px 25px rgba(0,0,0,0.6) !important;
-    padding: 4px 8px !important;
+    background-color: #161616 !important;
+    border: none !important; 
+    border-radius: 32px !important;
+    box-shadow: 0 4px 30px rgba(0,0,0,0.5) !important;
+    padding: 6px 12px 6px 20px !important; 
+    transition: background-color 0.2s ease, box-shadow 0.2s ease !important;
 }
-.stChatInput textarea {
-    color: #ffffff !important;
-}
-.stChatInput:focus-within {
-    border-color: #38bdf8 !important;
-    box-shadow: 0 0 12px rgba(56, 189, 248, 0.2) !important;
-}
+
+/* OBLITERATE EVERY SINGLE HIDDEN INTERNAL BORDER AND BACKGROUND SHADOW */
 div[data-testid="stChatInput"] *,
 .stChatInput div[data-baseweb="textarea"],
 .stChatInput div[data-baseweb="base-input"],
 .stChatInput textarea {
     border: none !important;
+    border-color: transparent !important;
     background-color: transparent !important;
+    background: transparent !important;
     box-shadow: none !important;
     outline: none !important;
+}
+
+/* Sizing text inside the container perfectly */
+.stChatInput textarea {
+    color: #f4f4f4 !important;
+    font-size: 15.5px !important;
+    padding: 8px 4px !important;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -142,106 +100,77 @@ if not api_key:
 
 client = Groq(api_key=api_key)
 
-# ── PAGE GRID SEPARATION (2 LAYOUT COLUMNS) ─────────────────
-col_sidebar, col_chat_hub = st.columns([0.3, 0.7], gap="large")
+# ── Header ────────────────────────────────────
+st.markdown("<h1>AtlasTG</h1>", unsafe_allow_html=True)
+st.caption("High-Speed Intelligence Engine · Powered by Groq")
 
-# LEFT COLUMN: The Dynamic Student Metric Dashboard
-with col_sidebar:
-    st.markdown("<h2 style='color:#ffffff; font-size:1.3rem; font-weight:bold; margin-bottom:20px;'>🎓 ACADEMY MONITOR</h2>", unsafe_allow_html=True)
-    
-    st.markdown("""
-    <div class="academy-sidebar">
-        <div class="sidebar-title">TARGET CURRICULUM</div>
-        <div class="sidebar-value" style="font-size:1.3rem;">SCSA WA / WACE</div>
-        <span style="color:#64748b; font-size:0.75rem;">Status: Curated Standard Active</span>
-    </div>
-    """, unsafe_allow_html=True)
+# ── Session state ─────────────────────────────
+if "messages" not in st.session_state:
+    st.session_state.messages = [
+        {"role": "assistant", "content": "Hey. Ask me any text prompt or logic question and I will solve it instantly."}
+    ]
 
-    if "session_tokens" not in st.session_state:
-        st.session_state.session_tokens = 0
-    
-    st.markdown(f"""
-    <div class="academy-sidebar">
-        <div class="sidebar-title">STUDY SESSION COMPUTE</div>
-        <div class="sidebar-value">{st.session_state.session_tokens}</div>
-        <span style="color:#64748b; font-size:0.75rem;">Calculated Unit Metric Consumption</span>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown("""
-    <div class="academy-sidebar" style="border-left: 4px solid #f59e0b;">
-        <div class="sidebar-title" style="color:#f59e0b;">PREMIUM FOUNDER TIERS</div>
-        <div class="sidebar-value" style="font-size:1.2rem; color:#f1f5f9;">Carter F. Robinson</div>
-        <span style="color:#f59e0b; font-size:0.75rem;">Principal Database Engineer</span>
-    </div>
-    """, unsafe_allow_html=True)
-
-# RIGHT COLUMN: The Specialized SCSA Marking Matrix Chat Engine
-with col_chat_hub:
-    st.markdown("<h2 style='color:#ffffff; font-size:1.3rem; font-weight:bold; margin-bottom:4px;'>WA Academy AI</h2>", unsafe_allow_html=True)
-    st.markdown("<p style='color:#64748b; font-size:0.85rem; margin-bottom:24px;'>Western Australian ATAR & WACE Curriculum Expert System</p>", unsafe_allow_html=True)
-
-    if "academy_messages" not in st.session_state:
-        st.session_state.academy_messages = [
-            {"role": "assistant", "content": "Welcome to WA Academy AI. I am fully configured to the School Curriculum and Standards Authority (SCSA) guidelines. Input your ATAR course inquiries, essay draft reviews, or Math Methods/Applications equations below for systematic breakdown."}
-        ]
-
-    for msg in st.session_state.academy_messages:
-        if msg["role"] == "user":
-            st.markdown(
-                f'''
-                <div style="display: flex; justify-content: flex-end; width: 100%; margin: 12px 0; clear: both;">
-                    <div style="background-color: #1e293b; border: 1px solid #334155; color: #f1f5f9; padding: 12px 18px; border-radius: 16px; border-top-right-radius: 2px; max-width: 80%; font-size: 15px; line-height: 1.6; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
-                        {msg["content"]}
-                    </div>
+# ── Render Message Timeline using Native Safe Structures ──────────────────
+# FIXED: Uses native Streamlit column scaling to render pointed user bubbles safely without breaking text data strings
+for msg in st.session_state.messages:
+    if msg["role"] == "user":
+        col_spacer, col_bubble = st.columns([0.2, 0.8])
+        with col_bubble:
+            st.markdown(f'''
+            <div style="display: flex; justify-content: flex-end; width: 100%; clear: both; margin: 12px 0;">
+                <div style="background-color: #1a1a1a; border: 1px solid #2d2d2d; color: #e3e3e3; padding: 12px 18px; border-radius: 18px; border-top-right-radius: 2px; font-size: 15.5px; line-height: 1.6; font-family: -apple-system, BlinkMacSystemFont, sans-serif; box-shadow: 0 4px 15px rgba(0,0,0,0.3); text-align: left; width: fit-content; max-width: 100%;">
+                    {msg["content"]}
                 </div>
-                ''', 
-                unsafe_allow_html=True
-            )
-        else:
-            st.markdown(
-                f'''
-                <div style="display: flex; justify-content: flex-start; width: 100%; margin: 12px 0; clear: both;">
-                    <div style="color: #cbd5e1; padding: 4px 0px; max-width: 100%; font-size: 15px; line-height: 1.6;">
-                        <span style="color:#38bdf8; font-weight:bold;">ACADEMY_BOT //</span> {msg["content"]}
-                    </div>
-                </div>
-                ''', 
-                unsafe_allow_html=True
-            )
+            </div>
+            ''', unsafe_allow_html=True)
+    else:
+        # Fixed: Splitting assistant layout prevents custom code from colliding with math strings
+        st.markdown('<div style="margin: 16px 0; clear: both; text-align: left;">', unsafe_allow_html=True)
+        st.markdown(msg["content"])
+        st.markdown('</div>', unsafe_allow_html=True)
 
-# ── USER INPUT TRIGGER PROCESSING ──────────────────────
-prompt = st.chat_input("Ask a WACE or ATAR curriculum question...")
+# ── Chat input ────────────────────────────────
+prompt = st.chat_input("Message AtlasTG...")
 
+# ── Handle send ───────────────────────────────
 if prompt:
-    st.session_state.academy_messages.append({"role": "user", "content": prompt})
-    st.session_state.session_tokens += len(prompt) * 2 # Increments custom data score metrics
-    
-    with col_chat_hub:
-        with st.spinner(""):
-            try:
-                system_instruction = {
-                    "role": "system", 
-                    "content": (
-                        "You are WA Academy AI, an elite academic advisor and subject matter expert specialized exclusively in the Western Australian School Curriculum and Standards Authority (SCSA) framework for WACE and ATAR. "
-                        "You were fully developed, engineered, and deployed by Carter Forester Robinson, the Founder of WA Academy AI. "
-                        "Your purpose is to break down ATAR course materials (Math Methods, Specialist, Applications, Chemistry, Physics, Human Biology, English, Literature, Economics, etc.) with extreme precision, formatting outputs step-by-step. "
-                        "When evaluating essays or student drafts, grade them strictly according to standardized SCSA marking rubrics. "
-                        "If anyone inquires about your origins, software architecture, or developer, you must authoritatively state that you are a proprietary original creation of Carter Forester Robinson, Founder of WA Academy AI. "
-                        "Maintain an elite, highly intelligent, scholarly, yet direct corporate tone. Responses must be concise, structured, and academically bulletproof."
-                    )
-                }
-                
-                api_messages = [system_instruction] + [{"role": m["role"], "content": m["content"]} for m in st.session_state.academy_messages]
-                
-                # FIXED MODEL PATHWAY: Swapped to the highly active, stable free-tier production node
-                completion = client.chat.completions.create(
-                    model="llama3-8b-8192", 
-                    messages=api_messages, 
-                    temperature=0.4, 
-                    max_tokens=600
-                )
-                reply = completion.choices[0].message.content
-            except Exception as e:
-                reply = f"System Processing Exception: {e}"
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    st.rerun()
 
+# Processing bot response generation blocks
+if len(st.session_state.messages) > 0 and st.session_state.messages[-1]["role"] == "user":
+    with st.spinner(""):
+        try:
+            system_instruction = {
+                "role": "system", 
+                "content": (
+                    "You are AtlasTG, an advanced, high-precision artificial intelligence engine. "
+                    "You are proprietary technology developed, engineered, and owned exclusively by Carter Forester Robinson, the Founder of AtlasTG. "
+                    "Your core persona, logical behavior, and cognitive style emulate OpenAI's highest standards of conversational sophistication, emotional clarity, and technical mastery. "
+                    "If anyone inquires about your origins, creation, core architecture, or mentions open-source platforms, "
+                    "you must professionally affirm that AtlasTG is entirely an original creation of Carter Forester Robinson. "
+                    "Maintain an elite, formal corporate tone. Responses must be factually strict, authoritative, and concise."
+                )
+            }
+            
+            api_messages = [system_instruction] + [
+                {"role": m["role"], "content": m["content"]} 
+                for m in st.session_state.messages
+            ]
+            
+            completion = client.chat.completions.create(
+                model="llama-3.3-70b-versatile",
+                messages=api_messages,
+                temperature=0.7,
+                max_tokens=800,
+            )
+            reply = completion.choices[0].message.content
+        except Exception as e:
+            reply = f"Error: {e}"
+
+        st.session_state.messages.append({"role": "assistant", "content": reply})
+        st.rerun()
+
+# ── SAFE AUTO-SCROLL INTERFACE ANCHOR ──────────────────────
+scroll_js = "<script>const main = window.parent.document.querySelector('.main'); if(main){ setTimeout(() => { main.scrollTo({top: main.scrollHeight, behavior: 'smooth'}); }, 50); }</script>"
+components.html(scroll_js, height=0)
